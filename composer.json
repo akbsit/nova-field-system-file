@@ -1,0 +1,36 @@
+{
+    "name": "falbar/nova-field-system-file",
+    "description": "Uploading files to the server from nova.",
+    "keywords": [
+        "laravel",
+        "media",
+        "files",
+        "images",
+        "downloads",
+        "cms",
+        "upload",
+        "nova"
+    ],
+    "homepage": "http://falbar.ru/",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Falbar\\NovaFieldSystemFile\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Falbar\\NovaFieldSystemFile\\FieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
