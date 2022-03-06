@@ -1,7 +1,6 @@
 <template>
-  <div class="file-item mb-3 p-3">
-    <img v-if="file"
-         :src="file.file_url"
+  <div v-if="file" :class="`file-item ${className}`">
+    <img :src="file.file_url"
          :alt="file.file_name"
          class="file-image"/>
   </div>
@@ -10,7 +9,8 @@
 <script>
 export default {
   props: {
-    file: Object
+    file: Object,
+    className: String
   }
 }
 </script>
@@ -24,7 +24,6 @@ export default {
   display: flex;
   height: 150px;
   width: 150px;
-  float: left;
 
   & .file-image {
     border-radius: 10px;
