@@ -7,12 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 
+use Falbar\SystemFile\Models\SystemFile;
+use Exception;
+
 /**
  * Class Media
  * @package Falbar\NovaFieldSystemFile\Field
  */
 class Media extends Field
 {
+    const ACTION_CREATE = 'create';
+    const ACTION_UPDATE = 'update';
+    const ACTION_DELETE = 'delete';
+
     /* @inheritDoc */
     public $component = 'nova-field-system-file';
 
@@ -102,29 +109,50 @@ class Media extends Field
      */
     private function handleMedia(NovaRequest $oRequest, $sRequestCollection, $oModel): void
     {
-        /* @var UploadedFile $oFile */
-        $oFile = Arr::get($oRequest, '__file__.' . $sRequestCollection);
-        if (empty($oFile) || empty($oModel)) {
+        $sFileAction = Arr::get($oRequest, '__file__action');
+        if (empty($sFileAction) || empty($sRequestCollection) || empty($oModel)) {
             return;
         }
 
-        $oMedia = $oModel->addMedia($oFile)->single()->toCollection($sRequestCollection);
-        if ($this->bIsPartition) {
-            $oMedia->enablePartition();
-        }
+        switch ($sFileAction) {
+            case self::ACTION_CREATE;
+            case self::ACTION_UPDATE;
+                /* @var UploadedFile $oFile */
+                $oFile = Arr::get($oRequest, '__file__.0');
+                if (empty($oFile)) {
+                    return;
+                }
 
-        if ($this->sFileName) {
-            $oMedia->setFileName($this->sFileName);
-        }
+                $oMedia = $oModel->addMedia($oFile)->single()->toCollection($sRequestCollection);
+                if ($this->bIsPartition) {
+                    $oMedia->enablePartition();
+                }
 
-        if ($this->sOriginFileName) {
-            $oMedia->setOriginFileName($this->sOriginFileName);
-        }
+                if ($this->sFileName) {
+                    $oMedia->setFileName($this->sFileName);
+                }
 
-        if ($this->sDir) {
-            $oMedia->toDir($this->sDir);
-        }
+                if ($this->sOriginFileName) {
+                    $oMedia->setOriginFileName($this->sOriginFileName);
+                }
 
-        $oMedia->put();
+                if ($this->sDir) {
+                    $oMedia->toDir($this->sDir);
+                }
+
+                $oMedia->put();
+                break;
+            case self::ACTION_DELETE;
+                $oModel->getMedia($sRequestCollection)
+                    ->each(function ($sFileItem) {
+                        try {
+                            /* @var SystemFile $sFileItem */
+                            $sFileItem->delete();
+                        } catch (Exception $oException) {
+                            return true;
+                        }
+                    });
+                break;
+        }
     }
 }
