@@ -8,20 +8,33 @@
     <label :for="`__file__${field.attribute}`"
            class="form-file-btn btn btn-default btn-primary">
       <template v-if="file">
-        Replace file
+        Replace {{ type }}
       </template>
       <template v-else>
-        Upload new file
+        Upload new {{ type }}
       </template>
     </label>
   </div>
 </template>
 
 <script>
+import { isFile, isImage } from '../../utils';
+
 export default {
   props: {
     field: Object,
     file: Object
+  },
+  computed: {
+    type() {
+      if (isFile(this.field.type)) {
+        return 'file';
+      }
+
+      if (isImage(this.field.type)) {
+        return 'image';
+      }
+    }
   },
   methods: {
     uploadFile() {

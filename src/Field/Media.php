@@ -23,10 +23,10 @@ class Media extends Field
     /* @inheritDoc */
     public $component = 'nova-field-system-file';
 
-    protected string $sOriginFileName;
-    protected string $sFileName;
-    protected string $sDir;
-    protected bool $bIsPartition;
+    protected string $sOriginFileName = '';
+    protected string $sFileName = '';
+    protected string $sDir = SystemFile::DIR_DEFAULT;
+    protected bool $bIsPartition = false;
 
     /**
      * @param string $sDir
@@ -118,8 +118,8 @@ class Media extends Field
             case self::ACTION_CREATE;
             case self::ACTION_UPDATE;
                 /* @var UploadedFile $oFile */
-                $oFile = Arr::get($oRequest, '__file__.0');
-                if (empty($oFile)) {
+                $oFile = Arr::get($oRequest, '__file__.' . $sRequestCollection);
+                if (empty($oFile) || !$oFile instanceof UploadedFile) {
                     return;
                 }
 
@@ -143,15 +143,26 @@ class Media extends Field
                 $oMedia->put();
                 break;
             case self::ACTION_DELETE;
-                $oModel->getMedia($sRequestCollection)
-                    ->each(function ($sFileItem) {
-                        try {
-                            /* @var SystemFile $sFileItem */
-                            $sFileItem->delete();
-                        } catch (Exception $oException) {
-                            return true;
-                        }
-                    });
+                $arFileList = Arr::get($oRequest, '__file__');
+                if (empty($arFileList)) {
+                    return;
+                }
+
+                foreach ($arFileList as $sCollection) {
+                    if ($sRequestCollection !== $sCollection) {
+                        continue;
+                    }
+
+                    $oModel->getMedia($sRequestCollection)
+                        ->each(function ($oFileItem) {
+                            try {
+                                /* @var SystemFile $oFileItem */
+                                $oFileItem->delete();
+                            } catch (Exception $oException) {
+                                return true;
+                            }
+                        });
+                }
                 break;
         }
     }

@@ -2,6 +2,7 @@
   <panel-item :field="field">
     <FileItem slot="value"
               :file="field.value"
+              :field="field"
               className="p-3"/>
   </panel-item>
 </template>

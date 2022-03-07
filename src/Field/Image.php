@@ -6,4 +6,6 @@
  */
 class Image extends Media
 {
+    /* @inheritDoc */
+    public $meta = ['type' => 'image'];
 }

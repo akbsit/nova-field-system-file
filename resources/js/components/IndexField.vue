@@ -1,5 +1,6 @@
 <template>
   <FileItem :file="field.value"
+            :field="field"
             className="mb-3 mt-3 p-3"/>
 </template>
 

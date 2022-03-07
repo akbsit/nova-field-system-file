@@ -2,7 +2,9 @@
   <default-field :field="field">
     <template slot="field">
       <FileItem :file="file"
+                :field="field"
                 :showDeleteButton="true"
+                :showFileName="true"
                 @delete="deleteFile"
                 className="mb-3 p-3"/>
       <FileButton :field="field"
@@ -58,10 +60,11 @@ export default {
           }
 
           formData.append('__file__action', this.action);
-          formData.append(`__file__[]`, value.file, value.file_name);
+          formData.append(`__file__[${this.field.attribute}]`, value.file, value.file_name);
           break;
         case ACTION.DELETE:
           formData.append('__file__action', this.action);
+          formData.append('__file__[]', this.field.attribute);
           break;
       }
     }

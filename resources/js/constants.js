@@ -3,3 +3,8 @@ export const ACTION = {
   UPDATE: 'update',
   DELETE: 'delete'
 };
+
+export const TYPE = {
+  IMAGE: 'image',
+  FILE: 'file'
+};
