@@ -1,4 +1,4 @@
-# nova-field-system-file, [Packagist](https://packagist.org/packages/falbar/nova-field-system-file)
+# nova-field-system-file, [Packagist](https://packagist.org/packages/falbar/nova-field-system-file), [Nova packages](https://novapackages.com/packages/falbar/nova-field-system-file)
 
 ## Установка
 
