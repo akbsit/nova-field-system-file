@@ -3,6 +3,9 @@
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Field;
 
+use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -16,10 +19,6 @@ use Exception;
  */
 class Media extends Field
 {
-    const ACTION_CREATE = 'create';
-    const ACTION_UPDATE = 'update';
-    const ACTION_DELETE = 'delete';
-
     /* @inheritDoc */
     public $component = 'nova-field-system-file';
 
@@ -27,6 +26,9 @@ class Media extends Field
     protected string $sFileName = '';
     protected string $sDir = SystemFile::DIR_DEFAULT;
     protected bool $bIsPartition = false;
+
+    protected array $arDefaultRuleList = [];
+    private array $arRuleList = [];
 
     /**
      * @param string $sDir
@@ -73,6 +75,18 @@ class Media extends Field
     }
 
     /* @inheritDoc */
+    public function rules($rules): self
+    {
+        $this->arRuleList = ($rules instanceof Rule || is_string($rules)) ? func_get_args() : $rules;
+
+        if ($this->isValidateRequired()) {
+            $this->required();
+        }
+
+        return $this;
+    }
+
+    /* @inheritDoc */
     public function resolve($oModel, $sAttribute = null)
     {
         $sCollection = $attribute ?? $this->attribute;
@@ -95,6 +109,8 @@ class Media extends Field
     /* @inheritDoc */
     protected function fillAttributeFromRequest(NovaRequest $oRequest, $sRequestCollection, $oModel, $sCollection)
     {
+        $this->validate($oRequest, $sRequestCollection, $oModel);
+
         return function () use ($oRequest, $sRequestCollection, $oModel) {
             $this->handleMedia($oRequest, $sRequestCollection, $oModel);
         };
@@ -106,23 +122,52 @@ class Media extends Field
      * @param object|Model $oModel
      *
      * @return void
+     *
+     * @throws ValidationException
      */
-    private function handleMedia(NovaRequest $oRequest, $sRequestCollection, $oModel): void
+    private function validate($oRequest, $sRequestCollection, $oModel): void
     {
-        $sFileAction = Arr::get($oRequest, '__file__action');
-        if (empty($sFileAction) || empty($sRequestCollection) || empty($oModel)) {
+        /* @var UploadedFile|string $oFile */
+        $oFile = Arr::get($oRequest, '__file__.' . $sRequestCollection);
+        if (is_null($oFile) && !$this->isValidateRequired()) {
             return;
         }
 
-        switch ($sFileAction) {
-            case self::ACTION_CREATE;
-            case self::ACTION_UPDATE;
-                /* @var UploadedFile $oFile */
-                $oFile = Arr::get($oRequest, '__file__.' . $sRequestCollection);
-                if (empty($oFile) || !$oFile instanceof UploadedFile) {
-                    return;
-                }
+        if ($oFile === 'null' && !$this->isValidateRequired()) {
+            return;
+        }
 
+        if (is_null($oFile) &&
+            $this->isValidateRequired() &&
+            !empty($oModel) &&
+            $oModel->mediaExists($sRequestCollection)) {
+            return;
+        }
+
+        $arRuleList = array_merge($this->arRuleList, $this->arDefaultRuleList);
+        $arRuleList = array_unique($arRuleList);
+
+        Validator::make([$sRequestCollection => $oFile], [$sRequestCollection => $arRuleList])
+            ->validate();
+    }
+
+    /**
+     * @param NovaRequest  $oRequest
+     * @param string       $sRequestCollection
+     * @param object|Model $oModel
+     *
+     * @return void
+     */
+    private function handleMedia(NovaRequest $oRequest, $sRequestCollection, $oModel): void
+    {
+        /* @var UploadedFile|string $oFile */
+        $oFile = Arr::get($oRequest, '__file__.' . $sRequestCollection);
+        if (empty($oFile) || empty($oModel)) {
+            return;
+        }
+
+        switch ($oFile) {
+            case $oFile instanceof UploadedFile:
                 $oMedia = $oModel->addMedia($oFile)->single()->toCollection($sRequestCollection);
                 if ($this->bIsPartition) {
                     $oMedia->enablePartition();
@@ -142,28 +187,23 @@ class Media extends Field
 
                 $oMedia->put();
                 break;
-            case self::ACTION_DELETE;
-                $arFileList = Arr::get($oRequest, '__file__');
-                if (empty($arFileList)) {
-                    return;
-                }
-
-                foreach ($arFileList as $sCollection) {
-                    if ($sRequestCollection !== $sCollection) {
-                        continue;
-                    }
-
-                    $oModel->getMedia($sRequestCollection)
-                        ->each(function ($oFileItem) {
-                            try {
-                                /* @var SystemFile $oFileItem */
-                                $oFileItem->delete();
-                            } catch (Exception $oException) {
-                                return true;
-                            }
-                        });
-                }
+            case 'null':
+                $oModel->getMedia($sRequestCollection)
+                    ->each(function ($oFileItem) {
+                        try {
+                            /* @var SystemFile $oFileItem */
+                            $oFileItem->delete();
+                        } catch (Exception $oException) {
+                            return true;
+                        }
+                    });
                 break;
         }
+    }
+
+    /* @return bool */
+    private function isValidateRequired(): bool
+    {
+        return in_array('required', $this->arRuleList);
     }
 }

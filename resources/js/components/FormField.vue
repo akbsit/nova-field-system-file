@@ -1,5 +1,5 @@
 <template>
-  <default-field :field="field">
+  <default-field :field="field" :errors="errors">
     <template slot="field">
       <FileItem :file="file"
                 :field="field"
@@ -59,12 +59,10 @@ export default {
             return;
           }
 
-          formData.append('__file__action', this.action);
           formData.append(`__file__[${this.field.attribute}]`, value.file, value.file_name);
           break;
         case ACTION.DELETE:
-          formData.append('__file__action', this.action);
-          formData.append('__file__[]', this.field.attribute);
+          formData.append(`__file__[${this.field.attribute}]`, null);
           break;
       }
     }

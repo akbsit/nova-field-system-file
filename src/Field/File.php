@@ -8,4 +8,6 @@ class File extends Media
 {
     /* @inheritDoc */
     public $meta = ['type' => 'file'];
+
+    protected array $arDefaultRuleList = [];
 }
