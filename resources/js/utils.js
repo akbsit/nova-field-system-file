@@ -2,7 +2,8 @@ import { TYPE } from './constants';
 
 /**
  * @param {string} type
- * @returns {boolean}
+ *
+ * @return {boolean}
  */
 export const isImage = (type) => {
   return type === TYPE.IMAGE;
@@ -10,7 +11,8 @@ export const isImage = (type) => {
 
 /**
  * @param {string} type
- * @returns {boolean}
+ *
+ * @return {boolean}
  */
 export const isFile = (type) => {
   return type === TYPE.FILE;

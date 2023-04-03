@@ -1,17 +1,20 @@
 <template>
-  <panel-item :field="field">
-    <FileItem slot="value"
-              :file="field.value"
-              :field="field"
-              className="p-3"/>
-  </panel-item>
+  <PanelItem
+    :index="index"
+    :field="field">
+    <template v-slot:value>
+      <FileItem :file="field.value"
+                :field="field"
+                className="nfsf_p-3"/>
+    </template>
+  </PanelItem>
 </template>
 
 <script>
 import FileItem from './file/FileItem';
 
 export default {
-  props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
   components: {
     FileItem
   }

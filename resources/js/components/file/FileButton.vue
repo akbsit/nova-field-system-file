@@ -1,20 +1,18 @@
 <template>
-  <div class="file-button">
-    <input :id="`__file__${field.attribute}`"
-           @change="uploadFile"
-           class="form-file-input"
-           type="file"
-           ref="file"/>
-    <label :for="`__file__${field.attribute}`"
-           class="form-file-btn btn btn-default btn-primary">
-      <template v-if="file">
-        Replace {{ type }}
-      </template>
-      <template v-else>
-        Upload new {{ type }}
-      </template>
-    </label>
-  </div>
+  <input :id="`__file__${field.attribute}`"
+         @change="uploadFile"
+         class="form-file-input"
+         type="file"
+         ref="file"/>
+  <label :for="`__file__${field.attribute}`"
+         class="bg-primary-500 hover:bg-primary-400 nfsf_inline-flex nfsf_shadow nfsf_cursor-pointer nfsf_rounded nfsf_text-sm nfsf_font-bold nfsf_h-9 nfsf_px-3 nfsf_items-center nfsf_justify-center nfsf_text-white">
+    <template v-if="file">
+      Replace {{ type }}
+    </template>
+    <template v-else>
+      Upload new {{ type }}
+    </template>
+  </label>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
   <FileItem :file="field.value"
             :field="field"
-            className="mb-3 mt-3 p-3"/>
+            className="nfsf_mb-3 nfsf_mt-3 nfsf_p-3 nfsf_h-24"/>
 </template>
 
 <script>
@@ -14,9 +14,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.file-item {
-  height: 110px !important;
-}
-</style>

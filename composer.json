@@ -1,39 +1,39 @@
 {
-    "name": "falbar/nova-field-system-file",
-    "description": "Uploading files to the server from nova.",
-    "keywords": [
-        "laravel",
-        "media",
-        "files",
-        "images",
-        "downloads",
-        "cms",
-        "upload",
-        "nova"
-    ],
-    "homepage": "http://falbar.ru/",
-    "license": "MIT",
-    "require": {
-        "php": "^8.1",
-        "laravel/framework": "^9.0",
-        "laravel/nova": "^3.0|^4.0",
-        "falbar/laravel-system-file": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Falbar\\NovaFieldSystemFile\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Falbar\\NovaFieldSystemFile\\FieldServiceProvider"
-            ]
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "falbar/nova-field-system-file",
+  "description": "Uploading files to the server from nova.",
+  "keywords": [
+    "laravel",
+    "media",
+    "files",
+    "images",
+    "downloads",
+    "cms",
+    "upload",
+    "nova"
+  ],
+  "homepage": "http://falbar.ru/",
+  "license": "MIT",
+  "require": {
+    "php": "^8.1",
+    "laravel/framework": "^9.0|^10.0",
+    "laravel/nova": "^3.0|^4.0",
+    "falbar/laravel-system-file": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Falbar\\NovaFieldSystemFile\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Falbar\\NovaFieldSystemFile\\FieldServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

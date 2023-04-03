@@ -1,23 +1,25 @@
 <template>
-  <div v-if="file" class="file-item-container">
-    <div :class="`file-item ${classNameList}`">
-      <div v-if="showDeleteButton" class="file-item-info">
-        <span class="delete" @click.prevent="$emit('delete')">
-          <icon type="delete" view-box="0 0 20 20" width="16" height="16"/>
+  <div v-if="file">
+    <div v-bind:class="getClassList()">
+      <div v-if="showDeleteButton"
+           class="group-hover:nfsf_flex nfsf_absolute nfsf_hidden nfsf_inset-x-0 nfsf_inset-y-0">
+        <span @click.prevent="$emit('delete')"
+              class="nfsf_absolute nfsf_right-2.5 nfsf_top-2.5 nfsf_cursor-pointer">
+          <Icon type="trash" :solid="false" class="nfsf_text-red-500"/>
         </span>
       </div>
 
       <template v-if="showFile">
-        <div class="archive" v-html="archiveIcon"></div>
+        <div v-html="archiveIcon" class="nfsf_text-center"></div>
       </template>
 
       <template v-if="showImage">
         <img :src="file.file_url"
              :alt="file.file_name"
-             class="file-image"/>
+             class="nfsf_rounded-xl"/>
       </template>
     </div>
-    <div v-if="showFileName" class="file-name">
+    <div v-if="showFileName" class="nfsf_mb-2.5 nfsf_text-sm">
       {{ file.file_name }}
     </div>
   </div>
@@ -47,81 +49,25 @@ export default {
       classNameList: this.className
     };
   },
-  mounted() {
-    this.init();
-  },
   computed: {
     archiveIcon() {
-      return '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="24px" height="24px" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M20 9v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zm0-2V5H4v2h16zM6 9v10h12V9H6zm4 2h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z" fill="#00947e"/></svg>';
+      return '<svg viewBox="0 0 24 24" class="nfsf_w-6 nfsf_h-6 nfsf_inline"><path class="heroicon-ui" d="M20 9v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zm0-2V5H4v2h16zM6 9v10h12V9H6zm4 2h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z" fill="#00947e"/></svg>';
     }
   },
   methods: {
-    init() {
+    getClassList() {
+      let sClassList = 'nfsf_flex nfsf_justify-center nfsf_flex-col nfsf_relative nfsf_rounded-xl nfsf_h-40 nfsf_w-40 nfsf_group ' + this.classNameList;
+
       if (this.showFile) {
-        this.classNameList += ' file-item-file';
+        sClassList += ' nfsf_bg-cyan-50';
       }
 
       if (this.showImage) {
-        this.classNameList += ' file-item-image';
+        sClassList += ' nfsf_bg-sky-100';
       }
+
+      return sClassList;
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.file-item-container {
-  & .file-item {
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 10px;
-    position: relative;
-    display: flex;
-    height: 150px;
-    width: 150px;
-
-    &.file-item-file {
-      background-color: #ebfffc;
-    }
-
-    &.file-item-image {
-      background-color: #e8f5fb;
-    }
-
-    &:hover .file-item-info {
-      display: flex;
-    }
-
-    & .archive {
-      text-align: center;
-    }
-
-    & .file-item-info {
-      position: absolute;
-      display: none;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      top: 0;
-
-      & .delete {
-        color: var(--danger);
-        position: absolute;
-        cursor: pointer;
-        right: 10px;
-        top: 10px;
-      }
-    }
-
-    & .file-image {
-      border-radius: 10px;
-    }
-  }
-
-  & .file-name {
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: #63718d;
-  }
-}
-</style>

@@ -1,17 +1,26 @@
 <template>
-  <default-field :field="field" :errors="errors">
-    <template slot="field">
-      <FileItem :file="file"
-                :field="field"
-                :showDeleteButton="true"
-                :showFileName="true"
-                @delete="deleteFile"
-                className="mb-3 p-3"/>
-      <FileButton :field="field"
-                  :file="file"
-                  @change="changeFile"/>
+  <DefaultField
+    :field="field"
+    :errors="errors"
+    :show-help-text="showHelpText"
+    :full-width-content="fullWidthContent"
+  >
+    <template #field>
+      <FileItem
+        :file="file"
+        :field="field"
+        :showDeleteButton="true"
+        :showFileName="true"
+        @delete="deleteFile"
+        className="nfsf_mb-3 nfsf_p-3"
+      />
+      <FileButton
+        :field="field"
+        :file="file"
+        @change="changeFile"
+      />
     </template>
-  </default-field>
+  </DefaultField>
 </template>
 
 <script>
