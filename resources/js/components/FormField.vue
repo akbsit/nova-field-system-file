@@ -12,7 +12,8 @@
         :showDeleteButton="true"
         :showFileName="true"
         @delete="deleteFile"
-        className="nfsf_mb-3 nfsf_p-3"
+        className="nfsf_mb-3 nfsf_p-3 nfsf_h-40 nfsf_w-40 nfsf_rounded-xl"
+        classNameImage="nfsf_rounded-xl"
       />
       <FileButton
         :field="field"

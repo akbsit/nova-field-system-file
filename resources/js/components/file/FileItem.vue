@@ -16,12 +16,15 @@
       <template v-if="showImage">
         <img :src="file.file_url"
              :alt="file.file_name"
-             class="nfsf_rounded-xl"/>
+             :class="this.classNameImageList"/>
       </template>
     </div>
     <div v-if="showFileName" class="nfsf_mb-2.5 nfsf_text-sm">
       {{ file.file_name }}
     </div>
+  </div>
+  <div v-else>
+    <p class="nfsf_text-center"> — </p>
   </div>
 </template>
 
@@ -33,6 +36,7 @@ export default {
     field: Object,
     file: Object,
     className: String,
+    classNameImage: String,
     showDeleteButton: {
       type: Boolean,
       default: false
@@ -46,7 +50,8 @@ export default {
     return {
       showFile: isFile(this.field.type),
       showImage: isImage(this.field.type),
-      classNameList: this.className
+      classNameList: this.className,
+      classNameImageList: this.classNameImage
     };
   },
   computed: {
@@ -56,7 +61,7 @@ export default {
   },
   methods: {
     getClassList() {
-      let sClassList = 'nfsf_flex nfsf_justify-center nfsf_flex-col nfsf_relative nfsf_rounded-xl nfsf_h-40 nfsf_w-40 nfsf_group ' + this.classNameList;
+      let sClassList = `nfsf_flex nfsf_justify-center nfsf_flex-col nfsf_relative nfsf_group ${this.classNameList}`;
 
       if (this.showFile) {
         sClassList += ' nfsf_bg-cyan-50';

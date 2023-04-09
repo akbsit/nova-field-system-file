@@ -5,7 +5,8 @@
     <template v-slot:value>
       <FileItem :file="field.value"
                 :field="field"
-                className="nfsf_p-3"/>
+                className="nfsf_p-3 nfsf_h-40 nfsf_w-40 nfsf_rounded-xl"
+                classNameImage="nfsf_rounded-xl"/>
     </template>
   </PanelItem>
 </template>
