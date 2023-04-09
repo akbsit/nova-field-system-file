@@ -17,6 +17,8 @@ class Media extends Field
 {
     public $component = 'nova-field-system-file';
 
+    public $textAlign = 'center';
+
     protected string $sOriginFileName = '';
     protected string $sFileName = '';
     protected string $sDir = SystemFile::DIR_DEFAULT;
