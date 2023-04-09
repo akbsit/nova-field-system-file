@@ -63,4 +63,5 @@ public function fields(HttpRequest $oHttpRequest)
 * `enablePartition()` - enable folder generation (example: `73c/d53/dce`);
 * `setOriginFileName(string $sOriginFileName)` - set origin file name;
 * `setFileName(string $sFileName)` - set file name;
-* `toDir(string $sDir)` - set storage folder (by default `default`).
+* `toDir(string $sDir)` - set storage folder (by default `default`);
+* `self()` - specified if the model `SystemFile` (by default `false`).

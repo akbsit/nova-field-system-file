@@ -9,13 +9,14 @@
       <FileItem
         :file="file"
         :field="field"
-        :showDeleteButton="true"
+        :showDeleteButton="changeable()"
         :showFileName="true"
         @delete="deleteFile"
         className="nfsf_mb-3 nfsf_p-3 nfsf_h-40 nfsf_w-40 nfsf_rounded-xl"
         classNameImage="nfsf_rounded-xl"
       />
       <FileButton
+        v-if="changeable()"
         :field="field"
         :file="file"
         @change="changeFile"
@@ -45,6 +46,9 @@ export default {
     }
   },
   methods: {
+    changeable() {
+      return !this.field.self;
+    },
     changeFile(event) {
       this.file = event;
       this.action = ACTION.UPDATE;

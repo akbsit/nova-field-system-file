@@ -1,8 +1,11 @@
 <?php namespace Falbar\NovaFieldSystemFile\Field;
 
-class File extends Media
+final class File extends Media
 {
-    public $meta = ['type' => 'file'];
+    public $meta = [
+        'type' => 'file',
+        'self' => false,
+    ];
 
     protected array $arDefaultRuleList = [];
 }

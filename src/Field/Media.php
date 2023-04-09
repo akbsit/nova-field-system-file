@@ -13,7 +13,7 @@ use Illuminate\Support\Arr;
 use Falbar\SystemFile\Models\SystemFile;
 use Exception;
 
-class Media extends Field
+abstract class Media extends Field
 {
     public $component = 'nova-field-system-file';
 
@@ -55,7 +55,13 @@ class Media extends Field
         return $this;
     }
 
-    /* @inheritDoc */
+    public function self(): self
+    {
+        $this->withMeta(['self' => true]);
+
+        return $this;
+    }
+
     public function rules($rules): self
     {
         $this->arRuleList = ($rules instanceof Rule || is_string($rules)) ? func_get_args() : $rules;
@@ -70,12 +76,22 @@ class Media extends Field
     /* @inheritDoc */
     public function resolve($oModel, $sAttribute = null)
     {
-        $sCollection = $attribute ?? $this->attribute;
-        if (empty($sCollection) || empty($oModel)) {
+        if (empty($oModel)) {
             return;
         }
 
-        $oFile = $oModel->getMediaFirst($sCollection);
+        /* @var SystemFile $oFile */
+        if (!$oModel instanceof SystemFile) {
+            $sCollection = $sAttribute ?? $this->attribute;
+            if (empty($sCollection)) {
+                return;
+            }
+
+            $oFile = $oModel->getMediaFirst($sCollection);
+        } else {
+            $oFile = $oModel->exists ? $oModel : null;
+        }
+
         if (empty($oFile)) {
             return;
         }
