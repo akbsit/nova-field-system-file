@@ -14,7 +14,7 @@ Next install migrations:
 php artisan migrate
 ```
 
-## Подключение
+## Connection
 
 Package based on [akbsit/laravel-system-file](https://github.com/akbsit/laravel-system-file) in repository which describes the connection to the model.
 
