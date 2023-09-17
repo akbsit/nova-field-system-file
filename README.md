@@ -1,11 +1,11 @@
-# nova-field-system-file, [Packagist](https://packagist.org/packages/falbar/nova-field-system-file), [Nova packages](https://novapackages.com/packages/falbar/nova-field-system-file)
+# nova-field-system-file, [Packagist](https://packagist.org/packages/akbsit/nova-field-system-file), [Nova packages](https://novapackages.com/packages/akbsit/nova-field-system-file)
 
 ## Install
 
 To install package, you need run command:
 
 ```bash
-composer require falbar/nova-field-system-file
+composer require akbsit/nova-field-system-file
 ```
 
 Next install migrations:
@@ -16,7 +16,7 @@ php artisan migrate
 
 ## Подключение
 
-Package based on [falbar/laravel-system-file](https://github.com/falbarRu/laravel-system-file) in repository which describes the connection to the model.
+Package based on [akbsit/laravel-system-file](https://github.com/akbsit/laravel-system-file) in repository which describes the connection to the model.
 
 ## Examples
 

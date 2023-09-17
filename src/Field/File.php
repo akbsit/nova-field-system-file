@@ -1,4 +1,4 @@
-<?php namespace Falbar\NovaFieldSystemFile\Field;
+<?php namespace Akbsit\NovaFieldSystemFile\Field;
 
 final class File extends Media
 {

@@ -1,4 +1,4 @@
-<?php namespace Falbar\NovaFieldSystemFile;
+<?php namespace Akbsit\NovaFieldSystemFile;
 
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;

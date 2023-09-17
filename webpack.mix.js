@@ -9,4 +9,4 @@ mix.setPublicPath('dist')
   .postCss('resources/css/field.css', 'css', [
     tailwindcss
   ])
-  .nova('falbar/nova-field-system-file');
+  .nova('akbsit/nova-field-system-file');

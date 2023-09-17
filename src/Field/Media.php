@@ -1,4 +1,4 @@
-<?php namespace Falbar\NovaFieldSystemFile\Field;
+<?php namespace Akbsit\NovaFieldSystemFile\Field;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Field;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 
-use Falbar\SystemFile\Models\SystemFile;
+use Akbsit\SystemFile\Models\SystemFile;
 use Exception;
 
 abstract class Media extends Field
